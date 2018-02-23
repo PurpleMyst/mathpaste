@@ -11,15 +11,18 @@
 
   const LINE_DELIMITER = "\n\n";
 
-  const ANCHOR = window.location.hash.substr(1);
-
   const $source = document.getElementById(SOURCE_ID);
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
 
   const lineElements = [];
 
-  const setAnchor = () => {
+  const loadMath = () => {
+    $source.value = atob(window.location.hash.substr(1));
+    renderLines();
+  };
 
+  const saveMath = () => {
+    window.location.hash = btoa($source.value);
   };
 
   const renderLines = () => {
@@ -42,8 +45,11 @@
     AuthorInit() {
       MathJax.Hub.Register.StartupHook("End", function() {
         MathJax.Hub.processSectionDelay = 0;
+
+        loadMath();
+
         $source.addEventListener("input", () => {
-          setAnchor();
+          saveMath();
           renderLines();
         });
       });
