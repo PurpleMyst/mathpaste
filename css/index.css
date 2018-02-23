@@ -1,1 +1,17 @@
-/* Allan please add details */
+#source {
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+
+#renderedLines {
+    float: right;
+    width: 50%;
+    height: 100%;
+
+    text-align: right;
+}
+
+#renderedLines > .line {
+    padding-bottom: 1em;
+}
