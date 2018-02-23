@@ -26,6 +26,10 @@ body {
     border-radius: 10px 0px 0px 10px;
 }
 
+#source:focus {
+    outline: none;
+}
+
 #renderedLines {
     width: 50%;
     height: 100%;
