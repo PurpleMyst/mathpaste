@@ -17,7 +17,14 @@
   const lineElements = [];
 
   const loadMath = () => {
+    $source.value = "Loading math from URL...";
+    $source.enabled = false;
+
+    console.time("loadMath");
     $source.value = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
+    $source.enabled = true;
+    console.timeEnd("loadMath");
+
     renderLines();
   };
 
