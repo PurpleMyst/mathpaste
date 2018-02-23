@@ -32,10 +32,15 @@
     window.location.hash = LZString.compressToEncodedURIComponent($source.value);
   };
 
+  let oldLines = [];
   const renderLines = () => {
     const lines = $source.value.split(LINE_DELIMITER);
 
     for (let i = 0; i < lines.length; ++i) {
+      if (oldLines[i] === lines[i]) {
+        continue;
+      }
+
       if (lineElements.length <= i) {
         const $line = document.createElement("div");
         $line.classList.add(LINE_CLASS);
@@ -51,6 +56,8 @@
     for (let i = lineElements.length - extraLines; i < lineElements.length; ++i) {
       lineElements[i].textContent = "";
     }
+
+    oldLines = lines;
   };
 
   window.MathJax = {
