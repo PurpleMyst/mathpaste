@@ -1,19 +1,44 @@
+body {
+    background-color: #000;
+}
+
 #source {
     width: 50%;
     height: 100%;
     float: left;
 
+    font-size: 1.5em;
+
+    background-color: #333;
+
+    color: #fff;
+
     resize: none;
+
+    padding-top: 0.5em;
+    padding-left: 1em;
+
+    /* I picked this value by changing it repeatedly for 30 seconds until it
+     * looked good. The Scientific Method™ */
+    line-height: 0.9em;
+
+    border: 0px;
+    border-radius: 10px 0px 0px 10px;
 }
 
 #renderedLines {
-    float: right;
     width: 50%;
     height: 100%;
+    float: right;
 
-    text-align: right;
+    background-color: #ddd;
+
+    text-align: left;
+
+    border-radius: 0px 10px 10px 0px;
 }
 
 #renderedLines > .line {
-    padding-bottom: 1em;
+    padding-top: 1em;
+    padding-left: 1em;
 }
