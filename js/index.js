@@ -1,5 +1,7 @@
 /* jshint browser: true, esnext: true */
 
+/* TODO: Figure out how this stuff actually works.
+ *       I just modified a bit of code my friend gave me. */
 (function() {
   "use strict";
 
@@ -9,32 +11,40 @@
 
   const LINE_DELIMITER = "\n\n";
 
+  const ANCHOR = window.location.hash.substr(1);
+
   const $source = document.getElementById(SOURCE_ID);
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
 
   const lineElements = [];
 
-  /* TODO: Figure out how this stuff actually works.
-   *       I just modified a bit of code my friend gave me. */
+  const setAnchor = () => {
+
+  };
+
+  const renderLines = () => {
+    const lines = $source.value.split(LINE_DELIMITER);
+
+    for (let i = 0; i < lines.length; ++i) {
+      if (lineElements.length <= i) {
+        const $line = document.createElement("div");
+        $line.classList.add(LINE_CLASS);
+        lineElements.push($line);
+        $renderedLines.append($line);
+      }
+
+      lineElements[i].textContent = "`" + lines[i] + "`";
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
+    }
+  };
+
   window.MathJax = {
     AuthorInit() {
       MathJax.Hub.Register.StartupHook("End", function() {
         MathJax.Hub.processSectionDelay = 0;
-
-        $source.addEventListener("input", function() {
-          const lines = $source.value.split(LINE_DELIMITER);
-
-          for (let i = 0; i < lines.length; ++i) {
-            if (lineElements.length <= i) {
-              const $line = document.createElement("div");
-              $line.classList.add(LINE_CLASS);
-              lineElements.push($line);
-              $renderedLines.append($line);
-            }
-
-            lineElements[i].textContent = "`" + lines[i] + "`";
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
-          }
+        $source.addEventListener("input", () => {
+          setAnchor();
+          renderLines();
         });
       });
     }
