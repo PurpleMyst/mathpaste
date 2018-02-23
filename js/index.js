@@ -17,12 +17,12 @@
   const lineElements = [];
 
   const loadMath = () => {
-    $source.value = atob(window.location.hash.substr(1));
+    $source.value = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
     renderLines();
   };
 
   const saveMath = () => {
-    window.location.hash = btoa($source.value);
+    window.location.hash = LZString.compressToEncodedURIComponent($source.value);
   };
 
   const renderLines = () => {
