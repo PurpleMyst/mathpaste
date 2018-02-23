@@ -39,6 +39,11 @@
       lineElements[i].textContent = "`" + lines[i] + "`";
       MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
     }
+
+    const extraLines = lineElements.length - lines.length;
+    for (let i = lineElements.length - extraLines; i < lineElements.length; ++i) {
+      lineElements[i].textContent = "";
+    }
   };
 
   window.MathJax = {
