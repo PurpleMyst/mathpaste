@@ -20,7 +20,7 @@ body {
 
     /* I picked this value by changing it repeatedly for 30 seconds until it
      * looked good. The Scientific Method™ */
-    line-height: 0.9em;
+    line-height: 1.2em;
 
     border: 0px;
     border-radius: 10px 0px 0px 10px;
