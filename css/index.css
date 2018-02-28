@@ -40,6 +40,8 @@ body {
     text-align: left;
 
     border-radius: 0px 10px 10px 0px;
+
+    overflow: scroll;
 }
 
 #renderedLines > .line {
