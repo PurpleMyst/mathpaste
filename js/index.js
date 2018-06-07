@@ -16,6 +16,7 @@
     mode: "ace/mode/text",
     selectionStyle: "text",
     showLineNumbers: false,
+    showGutter: false,
   });
 
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
