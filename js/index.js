@@ -12,7 +12,11 @@
   const LINE_DELIMITER = "\n\n";
 
   // TODO: Set more options.
-  let editor = ace.edit(SOURCE_ID, { mode: "ace/mode/text", selectionStyle: "text"});
+  let editor = ace.edit(SOURCE_ID, {
+    mode: "ace/mode/text",
+    selectionStyle: "text",
+    showLineNumbers: false,
+  });
 
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
 
