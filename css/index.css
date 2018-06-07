@@ -3,8 +3,9 @@ body {
 }
 
 #source {
-    width: 50%;
-    height: 100%;
+    position: absolute;
+    width: 48%;
+    height: 96%;
     float: left;
 
     font-size: 1.5em;

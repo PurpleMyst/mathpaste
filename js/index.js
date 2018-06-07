@@ -11,30 +11,33 @@
 
   const LINE_DELIMITER = "\n\n";
 
-  const $source = document.getElementById(SOURCE_ID);
+  // TODO: Set more options.
+  let editor = ace.edit(SOURCE_ID, { mode: "ace/mode/text", selectionStyle: "text"});
+
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
 
   const lineElements = [];
 
   const loadMath = () => {
-    $source.value = "Loading math from URL...";
-    $source.enabled = false;
+    editor.session.setValue("Loading math from URL...");
+    editor.setReadOnly(true);
 
     console.time("loadMath");
-    $source.value = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
-    $source.enabled = true;
+    const loadedMath = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
+    editor.session.setValue(loadedMath || "");
+    editor.setReadOnly(false);
     console.timeEnd("loadMath");
 
     renderLines();
   };
 
   const saveMath = () => {
-    window.location.hash = LZString.compressToEncodedURIComponent($source.value);
+    window.location.hash = LZString.compressToEncodedURIComponent(editor.getValue());
   };
 
   let oldLines = [];
   const renderLines = () => {
-    const lines = $source.value.split(LINE_DELIMITER);
+    const lines = editor.getValue().split(LINE_DELIMITER);
 
     for (let i = 0; i < lines.length; ++i) {
       if (oldLines[i] === lines[i]) {
@@ -59,6 +62,7 @@
 
     oldLines = lines;
   };
+  window.renderLines = renderLines;
 
   window.MathJax = {
     AuthorInit() {
@@ -67,7 +71,8 @@
 
         loadMath();
 
-        $source.addEventListener("input", () => {
+        // XXX: input?
+        editor.session.on("change", () => {
           saveMath();
           renderLines();
         });
