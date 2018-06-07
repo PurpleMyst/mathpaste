@@ -17,6 +17,7 @@
     selectionStyle: "text",
     showLineNumbers: false,
     showGutter: false,
+    wrap: true,
   });
 
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
