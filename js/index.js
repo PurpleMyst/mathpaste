@@ -85,21 +85,4 @@
       });
     }
   };
-
-  const $infoButton = document.getElementById("info-button");
-  const $infoBox = document.getElementById("info-box");
-
-  $infoButton.addEventListener("click", function() {
-    $infoBox.classList.toggle("shown");
-  });
-
-  const isInsideInfoArea = (el) => {
-    return el && (el == $infoBox || el == $infoButton || isInsideInfoArea(el.parentElement));
-  };
-
-  document.addEventListener("click", function(e) {
-    if (!isInsideInfoArea(e.target)) {
-      $infoBox.classList.remove("shown");
-    }
-  });
 }());
