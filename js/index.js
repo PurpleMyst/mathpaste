@@ -85,4 +85,10 @@
       });
     }
   };
+
+  const $infoButton = document.getElementById("info-button");
+  $infoButton.addEventListener("click", function() {
+    const $infoBox = document.getElementById("info-box");
+    $infoBox.classList.toggle("shown");
+  });
 }());
