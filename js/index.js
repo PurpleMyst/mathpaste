@@ -14,6 +14,7 @@
   // TODO: Set more options.
   let editor = ace.edit(SOURCE_ID, {
     mode: "ace/mode/text",
+    theme: "ace/theme/tomorrow_night_eighties",
     selectionStyle: "text",
     showLineNumbers: false,
     showGutter: false,
