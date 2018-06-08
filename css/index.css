@@ -16,7 +16,7 @@ body {
 
     opacity: 0.5;
 
-    /* TODO: Disable selection */
+    user-select: none;
 }
 
 #info-button:hover {
