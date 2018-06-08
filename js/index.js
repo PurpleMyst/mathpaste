@@ -5,14 +5,12 @@
 (function() {
   "use strict";
 
-  const SOURCE_ID = "source";
   const RENDERED_LINES_ID = "renderedLines";
   const LINE_CLASS = "line";
 
   const LINE_DELIMITER = "\n\n";
 
-  // TODO: Set more options.
-  let editor = ace.edit(SOURCE_ID, {
+  let editor = ace.edit("editor", {
     mode: "ace/mode/text",
     theme: "ace/theme/tomorrow_night_eighties",
     selectionStyle: "text",
@@ -20,6 +18,7 @@
     showGutter: false,
     wrap: true,
   });
+  editor.setAutoScrollEditorIntoView(true);
 
   const $renderedLines = document.getElementById(RENDERED_LINES_ID);
 

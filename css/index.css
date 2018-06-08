@@ -2,32 +2,30 @@ body {
     background-color: #000;
 }
 
-#source {
-    position: absolute;
-    width: 48%;
-    height: 96%;
+.editor-container {
+    position: relative;
+
+    width: 50%;
+    height: 100%;
+
     float: left;
+}
+
+#editor {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
 
     font-size: 1.2em;
-
-    resize: none;
-
-    padding-top: 0.5em;
-    padding-left: 1em;
-
-    /* I picked this value by changing it repeatedly for 30 seconds until it
-     * looked good. The Scientific Method™ */
-    line-height: 1.2em;
 
     border: 0px;
     border-radius: 10px 0px 0px 10px;
 }
 
-#source:focus {
-    outline: none;
-}
-
 #renderedLines {
+    position: relative;
+
     width: 50%;
     height: 100%;
     float: right;
@@ -36,9 +34,10 @@ body {
 
     text-align: left;
 
+    border: 0px;
     border-radius: 0px 10px 10px 0px;
 
-    overflow: scroll;
+    overflow: auto;
 }
 
 #renderedLines > .line {
