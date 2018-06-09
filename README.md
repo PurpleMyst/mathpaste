@@ -10,6 +10,17 @@ if you want to write fraction like this...
 ...you need `\frac{a+b}{c+d}` in LaTeX, but that's simply `(a+b) / (c+d)` in
 asciimath. Awesome!
 
+```
+[22:46]              xqb | :)
+[22:47]              xqb | I love mathpaste
+[22:47]              xqb | :D
+[22:47]            Akuli | :)
+[22:47]              xqb | not only it eliminated the need to buy another
+                           desk
+[22:47]              xqb | but it also eliminated the need for notebooks
+                           and pens and papers
+```
+
 
 ## Getting Started
 
