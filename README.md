@@ -57,5 +57,6 @@ friends, you can put them through an URL shortener like this:
 - MathPaste renders the asciimath with [MathJax](https://mathjax.org/).
 - [PurpleMyst](https://github.com/PurpleMyst/) and [Akuli](https://github.com/Akuli/)
   created MathPaste.
+- The text entry area is implemented with [ace](https://ace.c9.io/).
 - MathPaste is based on the "Try it out in the interactive renderer:" thing on
   [asciimath.org](http://asciimath.org/).
