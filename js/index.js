@@ -1,6 +1,5 @@
 /* jshint browser: true, esnext: true */
 
-// TODO: Use RequireJS to load LZString and MathJax.
 (function() {
     "use strict";
 
@@ -11,65 +10,66 @@
 
     require.config({
         paths: {
-            ace: "./ace/lib/ace"
+            ace: "./ace/lib/ace",
         }
     });
 
-    let editor;
+    // NB: MathJax doesn't really.. do anything with RequireJS. You can run it
+    // under RequireJs, but it still just defines its stuff under
+    // `window.MathJax`, not with a `requirejs.define`.  ¯\_(ツ)_/¯
+    const MATHJAX_URL = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js";
+    require([MATHJAX_URL, "./js/lz-string.min.js", "ace/ace"], function(_, LZString, ace) {
+        const $renderedLines = document.getElementById(RENDERED_LINES_ID);
+        let lineElements = [];
 
-    const $renderedLines = document.getElementById(RENDERED_LINES_ID);
+        const loadMath = () => {
+            const savedMath = window.location.hash.substr(1);
 
-    const lineElements = [];
+            editor.session.setValue("Loading math from URL...");
+            editor.setReadOnly(true);
 
-    const loadMath = () => {
-        const savedMath = window.location.hash.substr(1);
+            console.time("loadMath");
+            const loadedMath = LZString.decompressFromEncodedURIComponent(savedMath);
+            editor.session.setValue(loadedMath || "");
+            editor.setReadOnly(false);
+            console.timeEnd("loadMath");
 
-        editor.session.setValue("Loading math from URL...");
-        editor.setReadOnly(true);
+            renderLines();
+        };
 
-        console.time("loadMath");
-        const loadedMath = LZString.decompressFromEncodedURIComponent(savedMath);
-        editor.session.setValue(loadedMath || "");
-        editor.setReadOnly(false);
-        console.timeEnd("loadMath");
+        const saveMath = () => {
+            window.location.hash = LZString.compressToEncodedURIComponent(editor.getValue());
+        };
 
-        renderLines();
-    };
+        let oldLines = [];
+        const renderLines = () => {
+            const lines = editor.getValue().split(LINE_DELIMITER);
 
-    const saveMath = () => {
-        window.location.hash = LZString.compressToEncodedURIComponent(editor.getValue());
-    };
+            for (let i = 0; i < lines.length; ++i) {
+                if (oldLines[i] === lines[i]) {
+                    continue;
+                }
 
-    let oldLines = [];
-    const renderLines = () => {
-        const lines = editor.getValue().split(LINE_DELIMITER);
+                if (lineElements.length <= i) {
+                    const $line = document.createElement("div");
+                    $line.classList.add(LINE_CLASS);
+                    lineElements.push($line);
+                    $renderedLines.append($line);
+                }
 
-        for (let i = 0; i < lines.length; ++i) {
-            if (oldLines[i] === lines[i]) {
-                continue;
+                lineElements[i].textContent = "`" + lines[i] + "`";
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
             }
 
-            if (lineElements.length <= i) {
-                const $line = document.createElement("div");
-                $line.classList.add(LINE_CLASS);
-                lineElements.push($line);
-                $renderedLines.append($line);
+            const extraLines = lineElements.length - lines.length;
+            for (let i = lineElements.length - extraLines; i < lineElements.length; ++i) {
+                lineElements[i].textContent = "";
             }
 
-            lineElements[i].textContent = "`" + lines[i] + "`";
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
-        }
+            oldLines = lines;
+        };
 
-        const extraLines = lineElements.length - lines.length;
-        for (let i = lineElements.length - extraLines; i < lineElements.length; ++i) {
-            lineElements[i].textContent = "";
-        }
-
-        oldLines = lines;
-    };
-
-    require(["ace/ace"], function(ace) {
-        editor = ace.edit("editor", {
+        let editor = ace.edit("editor", {
             mode: "ace/mode/asciimath",
             theme: "ace/theme/tomorrow_night_eighties",
             selectionStyle: "text",
