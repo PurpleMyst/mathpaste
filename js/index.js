@@ -11,7 +11,7 @@
   const LINE_DELIMITER = "\n\n";
 
   let editor = ace.edit("editor", {
-    mode: "ace/mode/text",
+    mode: "ace/mode/asciimath",
     theme: "ace/theme/tomorrow_night_eighties",
     selectionStyle: "text",
     showLineNumbers: false,
