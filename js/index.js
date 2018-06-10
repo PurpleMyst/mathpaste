@@ -1,96 +1,92 @@
 /* jshint browser: true, esnext: true */
 
-/* TODO: Figure out how this stuff actually works.
- *       I just modified a bit of code my friend gave me. */
+// TODO: Use RequireJS to load LZString and MathJax.
 (function() {
-  "use strict";
+    "use strict";
 
-  const RENDERED_LINES_ID = "renderedLines";
-  const LINE_CLASS = "line";
+    const RENDERED_LINES_ID = "renderedLines";
+    const LINE_CLASS = "line";
 
-  const LINE_DELIMITER = "\n\n";
+    const LINE_DELIMITER = "\n\n";
 
-  require.config({
-      paths: {
-          ace: "./ace/lib/ace"
-       }
-  });
+    require.config({
+        paths: {
+            ace: "./ace/lib/ace"
+        }
+    });
 
-  require(["ace/ace"], function(ace) {
-  let editor = ace.edit("editor", {
-    mode: "ace/mode/asciimath",
-    theme: "ace/theme/tomorrow_night_eighties",
-    selectionStyle: "text",
-    showLineNumbers: false,
-    showGutter: false,
-    wrap: true,
-  });
-  editor.setAutoScrollEditorIntoView(true);
+    let editor;
 
-  const $renderedLines = document.getElementById(RENDERED_LINES_ID);
+    const $renderedLines = document.getElementById(RENDERED_LINES_ID);
 
-  const lineElements = [];
+    const lineElements = [];
 
-  const loadMath = () => {
-    editor.session.setValue("Loading math from URL...");
-    editor.setReadOnly(true);
+    const loadMath = () => {
+        editor.session.setValue("Loading math from URL...");
+        editor.setReadOnly(true);
 
-    console.time("loadMath");
-    const loadedMath = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
-    editor.session.setValue(loadedMath || "");
-    editor.setReadOnly(false);
-    console.timeEnd("loadMath");
+        console.time("loadMath");
+        const loadedMath = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
+        editor.session.setValue(loadedMath || "");
+        editor.setReadOnly(false);
+        console.timeEnd("loadMath");
 
-    renderLines();
-  };
+        renderLines();
+    };
 
-  const saveMath = () => {
-    window.location.hash = LZString.compressToEncodedURIComponent(editor.getValue());
-  };
+    const saveMath = () => {
+        window.location.hash = LZString.compressToEncodedURIComponent(editor.getValue());
+    };
 
-  let oldLines = [];
-  const renderLines = () => {
-    const lines = editor.getValue().split(LINE_DELIMITER);
+    let oldLines = [];
+    const renderLines = () => {
+        const lines = editor.getValue().split(LINE_DELIMITER);
 
-    for (let i = 0; i < lines.length; ++i) {
-      if (oldLines[i] === lines[i]) {
-        continue;
-      }
+        for (let i = 0; i < lines.length; ++i) {
+            if (oldLines[i] === lines[i]) {
+                continue;
+            }
 
-      if (lineElements.length <= i) {
-        const $line = document.createElement("div");
-        $line.classList.add(LINE_CLASS);
-        lineElements.push($line);
-        $renderedLines.append($line);
-      }
+            if (lineElements.length <= i) {
+                const $line = document.createElement("div");
+                $line.classList.add(LINE_CLASS);
+                lineElements.push($line);
+                $renderedLines.append($line);
+            }
 
-      lineElements[i].textContent = "`" + lines[i] + "`";
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
-    }
+            lineElements[i].textContent = "`" + lines[i] + "`";
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, lineElements[i]]);
+        }
 
-    const extraLines = lineElements.length - lines.length;
-    for (let i = lineElements.length - extraLines; i < lineElements.length; ++i) {
-      lineElements[i].textContent = "";
-    }
+        const extraLines = lineElements.length - lines.length;
+        for (let i = lineElements.length - extraLines; i < lineElements.length; ++i) {
+            lineElements[i].textContent = "";
+        }
 
-    oldLines = lines;
-  };
-  window.renderLines = renderLines;
+        oldLines = lines;
+    };
 
-  window.MathJax = {
-    AuthorInit() {
-      MathJax.Hub.Register.StartupHook("End", function() {
-        MathJax.Hub.processSectionDelay = 0;
-
-        loadMath();
-
-        // XXX: input?
-        editor.session.on("change", () => {
-          saveMath();
-          renderLines();
+    require(["ace/ace"], function(ace) {
+        editor = ace.edit("editor", {
+            mode: "ace/mode/asciimath",
+            theme: "ace/theme/tomorrow_night_eighties",
+            selectionStyle: "text",
+            showLineNumbers: false,
+            showGutter: false,
+            wrap: true,
         });
-      });
-    }
-  };
-  });
+        editor.setAutoScrollEditorIntoView(true);
+
+        editor.session.on("change", () => {
+            saveMath();
+            renderLines();
+        });
+
+        MathJax.Hub.Register.StartupHook("End", function() {
+            MathJax.Hub.processSectionDelay = 0;
+
+            loadMath();
+        });
+        MathJax.Hub.Configured();
+    });
 }());
