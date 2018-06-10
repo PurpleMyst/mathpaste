@@ -22,11 +22,13 @@
     const lineElements = [];
 
     const loadMath = () => {
+        const savedMath = window.location.hash.substr(1);
+
         editor.session.setValue("Loading math from URL...");
         editor.setReadOnly(true);
 
         console.time("loadMath");
-        const loadedMath = LZString.decompressFromEncodedURIComponent(window.location.hash.substr(1));
+        const loadedMath = LZString.decompressFromEncodedURIComponent(savedMath);
         editor.session.setValue(loadedMath || "");
         editor.setReadOnly(false);
         console.timeEnd("loadMath");
