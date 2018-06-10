@@ -18,14 +18,32 @@ body {
     transition: opacity 0.25s;
 
     user-select: none;
+
+    cursor: pointer;
 }
 
 #info-button:hover {
     opacity: 1;
 }
 
-#info-button > a {
-    text-decoration: none;
+#info-box {
+    position: absolute;
+
+    right: 32px;
+
+    width: 300px;
+    height: 200px;
+
+    background: #e1e1e1;
+    border: 1px solid white;
+    border-radius: 10px;
+
+    transition: opacity 0.25s;
+    opacity: 0;
+}
+
+#info-box.shown {
+    opacity: 1;
 }
 
 .editor-container {

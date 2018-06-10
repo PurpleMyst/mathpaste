@@ -84,6 +84,10 @@
             renderLines();
         });
 
+        document.getElementById("info-button").addEventListener("click", function() {
+          document.getElementById("info-box").classList.toggle("shown");
+        });
+
         MathJax.Hub.Register.StartupHook("End", function() {
             MathJax.Hub.processSectionDelay = 0;
 
