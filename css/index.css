@@ -3,11 +3,8 @@ body {
 }
 
 button {
-    position: absolute;
     width: 16px;
     height: 16px;
-
-    text-align: center;
 
     border: 1px solid white;
     background-color: #e1e1e1;
@@ -24,16 +21,11 @@ button:hover {
     opacity: 1;
 }
 
-#my-info-button {
+#button-holder {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
     right: 5px;
-}
-
-#my-share-button {
-    right: calc(5px + 16px + 2px);
-}
-
-#my-settings-button {
-    right: calc(5px + 16px + 2px + 16px + 2px);
 }
 
 #info-box {
