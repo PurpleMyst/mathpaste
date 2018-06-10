@@ -3,8 +3,8 @@ body {
 }
 
 button {
-    width: 16px;
-    height: 16px;
+    font-size: 0.9em;
+    text-align: center;
 
     border: 1px solid white;
     background-color: #e1e1e1;
