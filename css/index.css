@@ -24,15 +24,15 @@ button:hover {
     opacity: 1;
 }
 
-#info-button {
+#my-info-button {
     right: 5px;
 }
 
-#share-button {
+#my-share-button {
     right: calc(5px + 16px + 2px);
 }
 
-#settings-button {
+#my-settings-button {
     right: calc(5px + 16px + 2px + 16px + 2px);
 }
 
