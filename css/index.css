@@ -28,28 +28,35 @@ button:hover {
     right: 5px;
 }
 
-#info-box {
+/* TODO: Use a proper CSS3 animation so the pop-up boxes pop-up correctly. */
+.popup-box {
     position: absolute;
 
     right: 32px;
-
-    width: 400px;
-    height: auto;
 
     background: #e1e1e1;
     border: 1px solid white;
     border-radius: 10px;
 
-    transition: opacity 0.25s;
-    opacity: 0;
     display: none;
+    transition: display 0.25s, opacity 0.25s;
+    opacity: 0;
+}
+
+#info-box {
+    width: 400px;
+    height: auto;
 
     padding: 10px;
 }
 
-#info-box.shown {
-    opacity: 1;
+#share-box {
+    padding: 10px;
+}
+
+.shown {
     display: block;
+    opacity: 1;
 }
 
 

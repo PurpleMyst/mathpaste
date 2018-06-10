@@ -84,8 +84,42 @@
             renderLines();
         });
 
-        document.getElementById("info-button").addEventListener("click", function() {
-          document.getElementById("info-box").classList.toggle("shown");
+        const $infoButton = document.getElementById("info-button");
+        const $infoBox = document.getElementById("info-box");
+        const $shareButton = document.getElementById("share-button");
+        const $shareBox = document.getElementById("share-box");
+        const $settingsButton = document.getElementById("settings-button");
+        const $settingsBox = document.getElementById("settings-box");
+        const boxes = [$infoBox, $shareBox, $settingsBox];
+        const shouldNotCloseBoxes = [$infoBox, $shareBox, $settingsBox, $infoButton, $shareButton, $settingsButton];
+
+        $infoButton.addEventListener("click", function() {
+          boxes.forEach(box => box.classList.remove("shown"));
+          $infoBox.classList.add("shown");
+        });
+
+        $shareButton.addEventListener("click", function() {
+          boxes.forEach(box => box.classList.remove("shown"));
+          $shareBox.classList.add("shown");
+        });
+
+        $settingsButton.addEventListener("click", function() {
+          boxes.forEach(box => box.classList.remove("shown"));
+          $settingsBox.classList.add("shown");
+        });
+
+        document.addEventListener("click", function(e) {
+          let element = e.target;
+          let reachesABox = false;
+
+          while (element) {
+            if (!shouldNotCloseBoxes.every(el => el != element) ) { reachesABox = true; break; }
+            element = element.parentElement;
+          }
+
+          console.info(reachesABox);
+
+          if (!reachesABox) boxes.forEach(box => box.classList.remove("shown"));
         });
 
         MathJax.Hub.Register.StartupHook("End", function() {
