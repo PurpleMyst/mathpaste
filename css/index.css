@@ -33,8 +33,8 @@ button:hover {
 
     right: 32px;
 
-    width: 300px;
-    height: 200px;
+    width: 400px;
+    height: auto;
 
     background: #e1e1e1;
     border: 1px solid white;
@@ -43,12 +43,40 @@ button:hover {
     transition: opacity 0.25s;
     opacity: 0;
     display: none;
+
+    padding: 10px;
 }
 
 #info-box.shown {
     opacity: 1;
     display: block;
 }
+
+
+table {
+    border: 1px solid #666;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    text-align: left;
+}
+
+tr {
+    border-bottom: 1px solid #666;
+}
+
+td {
+    padding: 5px;
+}
+
+code {
+    background-color: #ccc;
+    padding: 2px;
+    border-radius: 5px;
+}
+
 
 .editor-container {
     position: relative;
