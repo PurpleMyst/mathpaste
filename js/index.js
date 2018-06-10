@@ -10,6 +10,13 @@
 
   const LINE_DELIMITER = "\n\n";
 
+  require.config({
+      paths: {
+          ace: "./ace/lib/ace"
+       }
+  });
+
+  require(["ace/ace"], function(ace) {
   let editor = ace.edit("editor", {
     mode: "ace/mode/asciimath",
     theme: "ace/theme/tomorrow_night_eighties",
@@ -85,4 +92,5 @@
       });
     }
   };
+  });
 }());
