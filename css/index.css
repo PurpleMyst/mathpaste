@@ -2,12 +2,10 @@ body {
     background-color: #000;
 }
 
-#info-button {
+button {
     position: absolute;
     width: 16px;
     height: 16px;
-
-    right: 5px;
 
     text-align: center;
 
@@ -22,8 +20,20 @@ body {
     cursor: pointer;
 }
 
-#info-button:hover {
+button:hover {
     opacity: 1;
+}
+
+#info-button {
+    right: 5px;
+}
+
+#share-button {
+    right: calc(5px + 16px + 2px);
+}
+
+#settings-button {
+    right: calc(5px + 16px + 2px + 16px + 2px);
 }
 
 #info-box {
