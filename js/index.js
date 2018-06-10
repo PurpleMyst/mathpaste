@@ -84,7 +84,7 @@
             renderLines();
         });
 
-        document.getElementById("my-info-button").addEventListener("click", function() {
+        document.getElementById("info-button").addEventListener("click", function() {
           document.getElementById("info-box").classList.toggle("shown");
         });
 
