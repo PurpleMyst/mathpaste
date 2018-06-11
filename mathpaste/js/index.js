@@ -1,4 +1,4 @@
-/* jshint browser: true, esnext: true */
+/* jshint browser: true, esversion: 6 */
 
 (function() {
     "use strict";
@@ -22,40 +22,41 @@
         const $renderedLines = document.getElementById(RENDERED_LINES_ID);
         let lineElements = [];
 
-        const loadMath = () => {
+        const loadMath = async () => {
             const pasteId = window.location.hash.substr(1);
             if (pasteId === "") return;
 
             editor.session.setValue("Loading math from URL...");
             editor.setReadOnly(true);
 
-            fetch(`/mathpaste/api/${pasteId}`).then(resp => resp.json())
-              .then(json_resp => {
-                if (!json_resp.ok) {
-                  alert(json_resp.error);
-                  return;
-                } else {
-                  editor.session.setValue(json_resp.content);
-                }
+            let resp = await fetch(`/mathpaste/api/${pasteId}`);
+            let json_resp = await resp.json();
+
+            if (!json_resp.ok) {
+                alert(json_resp.error);
+                return;
+            } else {
+                editor.session.setValue(json_resp.contents);
+            }
 
 
             renderLines();
-              });
         };
 
-        const saveMath = () => {
-          const body = editor.getValue();
-            return fetch("/mathpaste/api", {method: "POST", body})
-              .then(resp => resp.json())
-              .then(json_resp => {
-                if (!json_resp.ok) {
-                  alert(json_resp.error);
-                  return null;
-                } else {
-                  // TODO: Make this work if the location.href has a #.
-                  return window.location.href + "#" + json_resp.id;
-                }
-            });
+        const saveMath = async () => {
+            const body = editor.getValue();
+            const resp = await fetch("/mathpaste/api", {
+                method: "POST",
+                body
+            })
+            const json_resp = await resp.json();
+            if (!json_resp.ok) {
+                alert(json_resp.error);
+                return null;
+            } else {
+                // TODO: Make this work if the location.href has a #.
+                return window.location.href + "#" + json_resp.id;
+            }
         };
 
         let oldLines = [];
@@ -110,38 +111,42 @@
         const shouldNotCloseBoxes = [$infoBox, $shareBox, $settingsBox, $infoButton, $shareButton, $settingsButton];
 
         $infoButton.addEventListener("click", function() {
-          boxes.forEach(box => box.classList.remove("shown"));
-          $infoBox.classList.add("shown");
+            boxes.forEach(box => box.classList.remove("shown"));
+            $infoBox.classList.add("shown");
         });
 
-        $shareButton.addEventListener("click", function() {
-          const $shareUrl = document.getElementById("share-url");
-          boxes.forEach(box => box.classList.remove("shown"));
-          $shareBox.classList.add("shown");
-          saveMath().then(url => $shareUrl.value = url);
+        $shareButton.addEventListener("click", async function() {
+            const $shareUrl = document.getElementById("share-url");
+            boxes.forEach(box => box.classList.remove("shown"));
+            $shareBox.classList.add("shown");
+            let url = await saveMath();
+            $shareUrl.value = url;
         });
 
         $settingsButton.addEventListener("click", function() {
-          boxes.forEach(box => box.classList.remove("shown"));
-          $settingsBox.classList.add("shown");
+            boxes.forEach(box => box.classList.remove("shown"));
+            $settingsBox.classList.add("shown");
         });
 
         document.addEventListener("click", function(e) {
-          let element = e.target;
-          let reachesABox = false;
+            let element = e.target;
+            let reachesABox = false;
 
-          while (element) {
-            if (!shouldNotCloseBoxes.every(el => el != element) ) { reachesABox = true; break; }
-            element = element.parentElement;
-          }
+            while (element) {
+                if (!shouldNotCloseBoxes.every(el => el != element)) {
+                    reachesABox = true;
+                    break;
+                }
+                element = element.parentElement;
+            }
 
-          if (!reachesABox) boxes.forEach(box => box.classList.remove("shown"));
+            if (!reachesABox) boxes.forEach(box => box.classList.remove("shown"));
         });
 
-        MathJax.Hub.Register.StartupHook("End", function() {
+        MathJax.Hub.Register.StartupHook("End", async function() {
             MathJax.Hub.processSectionDelay = 0;
 
-            loadMath();
+            await loadMath();
         });
         MathJax.Hub.Configured();
     });
