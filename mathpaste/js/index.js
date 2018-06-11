@@ -24,6 +24,7 @@
 
         const loadMath = async () => {
             const pasteId = window.location.hash.substr(1);
+            window.location.hash = "";
             if (pasteId === "") return;
 
             editor.session.setValue("Loading math from URL...");
@@ -34,6 +35,7 @@
 
             if (!json_resp.ok) {
                 editor.setReadOnly(false);
+                editor.session.setValue("");
                 alert(json_resp.error);
                 return;
             } else {
@@ -56,8 +58,7 @@
                 alert(json_resp.error);
                 return null;
             } else {
-                // TODO: Make this work if the location.href has a #.
-                return window.location.href + "#" + json_resp.id;
+                return window.location.href + json_resp.id;
             }
         };
 
