@@ -1,0 +1,23 @@
+{
+  "name": "mathpaste-backend",
+  "version": "1.0.0",
+  "description": "The backend for MathPaste",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PurpleMyst/mathpaste"
+  },
+  "keywords": [
+    "math",
+    "paste"
+  ],
+  "author": "PurpleMyst",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "redis": "^2.8.0"
+  }
+}
