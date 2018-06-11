@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const client = redis.createClient();
 const app = express();
 
+const ONE_WEEK = 7 * 24 * 60 * 60;
+
 client.on("error", err => console.error(`Error: ${err}`));
 
 app.use(bodyParser.text({ "type": "*/*" }));
@@ -43,7 +45,7 @@ app.post("/mathpaste/api", (req, res) => {
 
   const pasteId = crypto.createHash("sha256").update(req.body).digest("hex");
 
-  client.set(`mathpaste:${pasteId}`, req.body, (err, reply) => {
+  client.setex(`mathpaste:${pasteId}`, ONE_WEEK, req.body, (err, reply) => {
     if (err !== null) {
       res.status(400);
       res.send({"ok": false, "error": err});

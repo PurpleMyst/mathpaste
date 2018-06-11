@@ -23,35 +23,39 @@
         let lineElements = [];
 
         const loadMath = () => {
-            const key = window.location.hash.substr(1);
+            const pasteId = window.location.hash.substr(1);
+            if (pasteId === "") return;
 
             editor.session.setValue("Loading math from URL...");
             editor.setReadOnly(true);
 
-            // FIXME
-            editor.session.setValue("");
-            editor.setReadOnly(false);
+            fetch(`/mathpaste/api/${pasteId}`).then(resp => resp.json())
+              .then(json_resp => {
+                if (!json_resp.ok) {
+                  alert(json_resp.error);
+                  return;
+                } else {
+                  editor.session.setValue(json_resp.content);
+                }
+
 
             renderLines();
-        };
-
-        // https://stackoverflow.com/a/7616484
-        String.prototype.hashCode = function() {
-          var hash = 0, i, chr;
-          if (this.length === 0) return hash;
-          for (i = 0; i < this.length; i++) {
-            chr   = this.charCodeAt(i);
-            hash  = ((hash << 5) - hash) + chr;
-            hash |= 0; // Convert to 32bit integer
-          }
-          return hash;
+              });
         };
 
         const saveMath = () => {
           const body = editor.getValue();
-          const key = body.hashCode();
-          // FIXME
-          return "TODO";
+            return fetch("/mathpaste/api", {method: "POST", body})
+              .then(resp => resp.json())
+              .then(json_resp => {
+                if (!json_resp.ok) {
+                  alert(json_resp.error);
+                  return null;
+                } else {
+                  // TODO: Make this work if the location.href has a #.
+                  return window.location.href + "#" + json_resp.id;
+                }
+            });
         };
 
         let oldLines = [];
