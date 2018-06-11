@@ -23,22 +23,35 @@
         let lineElements = [];
 
         const loadMath = () => {
-            const savedMath = window.location.hash.substr(1);
+            const key = window.location.hash.substr(1);
 
             editor.session.setValue("Loading math from URL...");
             editor.setReadOnly(true);
 
-            console.time("loadMath");
-            const loadedMath = LZString.decompressFromEncodedURIComponent(savedMath);
-            editor.session.setValue(loadedMath || "");
-            editor.setReadOnly(false);
-            console.timeEnd("loadMath");
+            return fetch(`http://localhost:7379/GET/${key}`).then(response => response.json()).then(data => {
+              editor.session.setValue(data.GET);
+              editor.setReadOnly(false);
 
-            renderLines();
+              renderLines();
+            });
+        };
+
+        // https://stackoverflow.com/a/7616484
+        String.prototype.hashCode = function() {
+          var hash = 0, i, chr;
+          if (this.length === 0) return hash;
+          for (i = 0; i < this.length; i++) {
+            chr   = this.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+          }
+          return hash;
         };
 
         const saveMath = () => {
-            window.location.hash = LZString.compressToEncodedURIComponent(editor.getValue());
+          const body = editor.getValue();
+          const key = body.hashCode();
+          return fetch(`http://localhost:7379/SET/${key}`, {method: "PUT", body}).then(_ => `${window.location.href}#${key}`);
         };
 
         let oldLines = [];
@@ -80,7 +93,6 @@
         editor.setAutoScrollEditorIntoView(true);
 
         editor.session.on("change", () => {
-            saveMath();
             renderLines();
         });
 
@@ -99,8 +111,10 @@
         });
 
         $shareButton.addEventListener("click", function() {
+          const $shareUrl = document.getElementById("share-url");
           boxes.forEach(box => box.classList.remove("shown"));
           $shareBox.classList.add("shown");
+          saveMath().then(url => $shareUrl.value = url);
         });
 
         $settingsButton.addEventListener("click", function() {
@@ -116,8 +130,6 @@
             if (!shouldNotCloseBoxes.every(el => el != element) ) { reachesABox = true; break; }
             element = element.parentElement;
           }
-
-          console.info(reachesABox);
 
           if (!reachesABox) boxes.forEach(box => box.classList.remove("shown"));
         });
