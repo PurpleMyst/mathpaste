@@ -33,9 +33,11 @@
             let json_resp = await resp.json();
 
             if (!json_resp.ok) {
+                editor.setReadOnly(false);
                 alert(json_resp.error);
                 return;
             } else {
+                editor.setReadOnly(false);
                 editor.session.setValue(json_resp.contents);
             }
 
