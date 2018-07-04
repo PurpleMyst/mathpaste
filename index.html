@@ -78,6 +78,21 @@
         <div class="popup-box" id="settings-box"></div>
     </div>
 
+    <!-- these firebase things must be before other script tags for some reason -->
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyD3O2tMBXqz8Go4-xCz9P-HXBH7WNrX9N4",
+        authDomain: "mathpaste-8cc8e.firebaseapp.com",
+        databaseURL: "https://mathpaste-8cc8e.firebaseio.com",
+        projectId: "mathpaste-8cc8e",
+        storageBucket: "",
+        messagingSenderId: "204735746640"
+      };
+      firebase.initializeApp(config);
+    </script>
+
     <script type="text/javascript" src="./js/require.js"></script>
     <script type="text/javascript" src="./js/index.js"></script>
 </body>
